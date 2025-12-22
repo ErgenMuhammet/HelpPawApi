@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace HelpPawApi.Application.DTOs.Command.ConfirmEmail
-{
+{// Email doğrulama işlemini yöneten handler sınıfı
     public class ConfirmEmailCommandHandler : IRequestHandler<ConfirmEmailCommandRequest, ConfirmEmailCommandResponse>
     {
         private readonly UserManager<AppUsers> _userManager;
