@@ -7,8 +7,10 @@
     namespace HelpPawApi.Application.DTOs.Command.CreateAdvertisement
     {
         public class CreateAdvertisementsCommandHandler : IRequestHandler<CreateAdvertisementsCommandRequest, CreateAdvertisementsCommandResponse>
-        {
-            private readonly UserManager<AppUsers> _userManager;
+    { // İlan oluşturmayı yöneten handler sınıfı
+
+
+        private readonly UserManager<AppUsers> _userManager;
             private readonly IAppContext _context;
             public CreateAdvertisementsCommandHandler(UserManager<AppUsers> userManager, IAppContext context)
             {
