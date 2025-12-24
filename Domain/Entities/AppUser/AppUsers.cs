@@ -1,4 +1,5 @@
-﻿using HelpPawApi.Domain.Entities.Locations;
+﻿using HelpPawApi.Domain.Entities.Chat;
+using HelpPawApi.Domain.Entities.Locations;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -23,5 +24,12 @@ namespace HelpPawApi.Domain.Entities.AppUser
 
         // --- Konumu (Her ikisinde de var) ---
         public Location? Location { get; set; }
+
+        // ---ChatMessages İlişkisi ---
+        public List<ChatMessage> ReceivedMessages{ get; set; }
+        public List<ChatMessage> SendMessages { get; set; }
+
+
+
     }
 }

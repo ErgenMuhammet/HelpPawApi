@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HelpPaw.Persistence.Migrations
 {
     [DbContext(typeof(IdentityContext))]
-    [Migration("20251219132250_InitialCreate")]
+    [Migration("20251223122221_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -194,6 +194,42 @@ namespace HelpPaw.Persistence.Migrations
                     b.ToTable("AspNetUsers", (string)null);
 
                     b.UseTptMappingStrategy();
+                });
+
+            modelBuilder.Entity("HelpPawApi.Domain.Entities.Chat.ChatMessage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReceiverId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("SenderId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReceiverId");
+
+                    b.HasIndex("SenderId");
+
+                    b.ToTable("ChatMessages", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -392,6 +428,25 @@ namespace HelpPaw.Persistence.Migrations
                     b.Navigation("Location");
                 });
 
+            modelBuilder.Entity("HelpPawApi.Domain.Entities.Chat.ChatMessage", b =>
+                {
+                    b.HasOne("HelpPawApi.Domain.Entities.AppUser.AppUsers", "Receiver")
+                        .WithMany("ReceivedMessages")
+                        .HasForeignKey("ReceiverId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("HelpPawApi.Domain.Entities.AppUser.AppUsers", "Sender")
+                        .WithMany("SendMessages")
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Receiver");
+
+                    b.Navigation("Sender");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("HelpPawApi.Domain.Entities.AppRole.AppRole", null)
@@ -459,6 +514,13 @@ namespace HelpPaw.Persistence.Migrations
                         .HasForeignKey("HelpPawApi.Domain.Entities.AppUser.Vet", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("HelpPawApi.Domain.Entities.AppUser.AppUsers", b =>
+                {
+                    b.Navigation("ReceivedMessages");
+
+                    b.Navigation("SendMessages");
                 });
 
             modelBuilder.Entity("HelpPawApi.Domain.Entities.AppUser.User", b =>

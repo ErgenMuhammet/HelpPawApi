@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Identity;
 using HelpPawApi.Application.Interfaces;
 using HelpPawApi.Domain.Entities.Advertisement;
+using HelpPaw.Infrustructure.ChatService;
 
 
 namespace HelpPaw.Persistence
@@ -36,8 +37,8 @@ namespace HelpPaw.Persistence
 
 
                 services.AddScoped<ITokenServices, TokenServices>();
-            services.AddScoped<IAppContext>(x => x.GetRequiredService<IdentityContext>());
-
+                services.AddScoped<IAppContext>(x => x.GetRequiredService<IdentityContext>());
+            services.AddScoped<IChatService, ChatServices>();
         }
     }
 }

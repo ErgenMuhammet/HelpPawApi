@@ -14,10 +14,7 @@ namespace HelpPaw.Persistence.Configuration
                 loc.Property(l => l.latitude).HasColumnName("Latitude");
                 loc.Property(l => l.longitude).HasColumnName("Longitude");
             });
-
-            // --- [YENİ EKLENEN KISIM] ---
-
-            // Tablo İsimlendirmeleri
+           
             builder.ToTable("AspNetUsers");
             
         }

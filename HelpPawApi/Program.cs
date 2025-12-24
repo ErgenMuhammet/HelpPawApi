@@ -8,14 +8,25 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
-using HelpPawApi.Application.Interfaces; // IAppContext için
-using HelpPaw.Persistence.Context;       // AdvertisementsContext için
+using HelpPawApi.Application.Interfaces; 
+using HelpPaw.Persistence.Context;
+using HelpPawApi.ChatHub;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// --- 1. SERVICES KISMI ---
+builder.Services.AddCors(opt =>
+{
+    opt.AddPolicy("CorsPolicy", builder =>
+    {
+        builder.AllowAnyOrigin().
+        AllowAnyMethod().
+        SetIsOriginAllowed((host) => true).
+        AllowCredentials();
 
-// Swagger Ayarlarý
+    });
+});
+builder.Services.AddSignalR();
+
 builder.Services.AddSwaggerGen(option =>
 {
     option.SwaggerDoc("v1", new OpenApiInfo { Title = "HelpPaw API", Version = "v1" });
@@ -78,25 +89,22 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-// --- 2. MIDDLEWARE & SEED DATA KISMI ---
+
 
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     try
     {
-        // Gerekli servisleri çaðýrýyoruz
+        
         var userManager = services.GetRequiredService<UserManager<AppUsers>>();
         var roleManager = services.GetRequiredService<RoleManager<AppRole>>();
 
-        // EKLENDÝ: Ýlan eklemek için Context'i de çaðýrmamýz lazým
         var context = services.GetRequiredService<IdentityContext>();
 
-        // 1. ADIM: Önce Kullanýcýlarý ve Rolleri Oluþtur
         var userSeedData = new HelpPaw.Persistence.Context.UserSeedData(userManager, roleManager);
         await userSeedData.InitializeAsync();
 
-        // 2. ADIM: Sonra Ýlanlarý Oluþtur (Çünkü ilanlar kullanýcýlara baðlý)
         var adSeedData = new HelpPaw.Persistence.Context.AdvertisementsContext(userManager, context);
         await adSeedData.InitializeAsync();
     }
@@ -113,9 +121,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseAuthentication(); // 1. Kimlik Doðrulama
-app.UseAuthorization();  // 2. Yetkilendirme
+app.UseCors("CorsPolicy");
+
+app.UseAuthentication(); 
+app.UseAuthorization();  
 
 app.MapControllers();
+
+app.MapHub<SignalRHub>("/signalrhub"); //anlýk bildirimler için handshake ile baðlantý devamlý saðlýyor
 
 app.Run();

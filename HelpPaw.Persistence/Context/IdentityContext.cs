@@ -3,6 +3,7 @@ using HelpPawApi.Application.Interfaces;
 using HelpPawApi.Domain.Entities.Advertisement;
 using HelpPawApi.Domain.Entities.AppRole;
 using HelpPawApi.Domain.Entities.AppUser;
+using HelpPawApi.Domain.Entities.Chat;
 using HelpPawApi.Domain.Entities.Locations;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +17,8 @@ namespace HelpPaw.Persistence.Context
         public IdentityContext(DbContextOptions<IdentityContext> options) : base(options)
         {
         }
+
+        public DbSet<ChatMessage> ChatMessages { get; set; }
 
         public DbSet<Location> location { get; set; }
         public DbSet<Advertisements> Advertisements { get; set; }
