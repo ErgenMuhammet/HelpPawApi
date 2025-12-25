@@ -19,41 +19,41 @@ namespace HelpPaw.Infrustructure.EmailService
         }
         public async Task SendEmailAsync(string toEmail, string subject, string message)
         {
-            var emailMessage = new MimeMessage(); //Mail içeriği, HTML gövdesi oluşturma yardımcısı
+            var emailMessage = new MimeMessage();
 
-            emailMessage.From.Add(new MailboxAddress("HelpPaw Destek", _configuration["MailSettings:Email"])); // json dosyasından gönderen bilgisini alacağız
+            emailMessage.From.Add(new MailboxAddress("HelpPaw Destek", _configuration["MailSettings:Email"]));
             emailMessage.To.Add(new MailboxAddress("", toEmail));
 
             emailMessage.Subject=subject;
             
-            var bodyBuilder = new BodyBuilder // e posta gövdesi
+            var bodyBuilder = new BodyBuilder 
             {
                 HtmlBody = message
-            }; // gövdede yukarıdan gelen bilgi bulunacak
-            emailMessage.Body = bodyBuilder.ToMessageBody(); // yukarıdaki bilgiyi gerçek bir mesaja dönüştürüyor
+            }; 
+            emailMessage.Body = bodyBuilder.ToMessageBody(); 
 
             using (var client = new SmtpClient())
             {
-                // SSL sertifika hatalarını yoksay (Geliştirme ortamı için)
+                
                 client.CheckCertificateRevocation = false;
 
-                // SMTP Sunucusuna Bağlan (Gmail: smtp.gmail.com, Port: 587)
+                
                 await client.ConnectAsync(
                     _configuration["MailSettings:Host"],
                     int.Parse(_configuration["MailSettings:Port"]),
                     SecureSocketOptions.StartTls
                 );
 
-                // Oturum Aç (Email ve Uygulama Şifresi)
+                
                 await client.AuthenticateAsync(
                     _configuration["MailSettings:Email"],
                     _configuration["MailSettings:Password"]
                 );
 
-                // Gönder
+              
                 await client.SendAsync(emailMessage);
 
-                // Bağlantıyı Kes
+                
                 await client.DisconnectAsync(true);
             }
         }
