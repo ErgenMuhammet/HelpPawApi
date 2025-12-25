@@ -100,10 +100,10 @@ namespace HelpPawApi.Controllers
         [HttpGet("User/Get/PastAdvertisement")]
         public async Task<IActionResult> GetUserAdvertisements()
         {          
-            var Emailromtoken = User.FindFirst(ClaimTypes.Email)?.Value;// Token içinden Kullanıcı ID'sini alıyoruz 
+            var Emailromtoken = User.FindFirst(ClaimTypes.Email)?.Value;
 
 
-            if (string.IsNullOrEmpty(Emailromtoken))// Eğer NameIdentifier boşsa, alternatif olarak Name claim'ini kontrol edelim
+            if (string.IsNullOrEmpty(Emailromtoken))
             {
                 Emailromtoken = User.FindFirst(ClaimTypes.Name)?.Value;
             }
@@ -134,15 +134,15 @@ namespace HelpPawApi.Controllers
         [HttpGet("Vet/Get/All")]
         public async Task<IActionResult> GetNearestAdvertisements()
         {
-            var Emailromtoken = User.FindFirst(ClaimTypes.Email)?.Value;// Token içinden Kullanıcı ID'sini alıyoruz 
+            var Emailromtoken = User.FindFirst(ClaimTypes.Email)?.Value;
 
 
-            if (string.IsNullOrEmpty(Emailromtoken))// Eğer NameIdentifier boşsa, alternatif olarak Name claim'ini kontrol edelim
+            if (string.IsNullOrEmpty(Emailromtoken))
             {
                 Emailromtoken = User.FindFirst(ClaimTypes.Name)?.Value;
             }
 
-            // Hala bulamadıysak hata dönelim
+           
             if (string.IsNullOrEmpty(Emailromtoken))
             {
                 return Unauthorized("Token geçerli ancak içinde Kullanıcı ID bilgisi (NameIdentifier) bulunamadı.");
