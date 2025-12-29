@@ -5,27 +5,35 @@ using HelpPawApi.Domain.Entities.AppRole;
 using HelpPawApi.Domain.Entities.AppUser;
 using HelpPawApi.Domain.Entities.Chat;
 using HelpPawApi.Domain.Entities.Locations;
+using HelpPawApi.Domain.Entities.Notification;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace HelpPaw.Persistence.Context
 {
-    public class IdentityContext  : IdentityDbContext<AppUsers, AppRole, string>, IAppContext
+    public class IdentityContext
+        : IdentityDbContext<AppUsers, AppRole, string>, IAppContext
     {
-        public IdentityContext(DbContextOptions<IdentityContext> options) : base(options)
+        public IdentityContext(DbContextOptions<IdentityContext> options)
+            : base(options)
         {
         }
 
         public DbSet<ChatMessage> ChatMessages { get; set; }
 
-        public DbSet<Location> location { get; set; }
+        public DbSet<Location> Location { get; set; }
         public DbSet<Advertisements> Advertisements { get; set; }
 
-        public async Task<int> SaveChangesAsync()
+    
+        public DbSet<Notification> Notifications { get; set; }
+
+       
+        public async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
         {
-            return await base.SaveChangesAsync();
+            return await base.SaveChangesAsync(cancellationToken);
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -38,5 +46,4 @@ namespace HelpPaw.Persistence.Context
             builder.ApplyConfiguration(new VetConfiguration());
         }
     }
-
 }

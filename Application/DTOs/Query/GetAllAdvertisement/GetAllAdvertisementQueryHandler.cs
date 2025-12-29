@@ -31,8 +31,8 @@ namespace HelpPawApi.Application.DTOs.Query.GetAllAdvertisement
             }
             if (user.City is not null)
             {
-                List<Advertisements> advs = await _appContext.
-                                                        Advertisements.
+              var advs = await _appContext.
+                                        Advertisements.Include(x => x.User).
                                                           Where(x => x.AddressDescription.ToLower().Trim() == user.City.ToLower().Trim()).
                                                              ToListAsync<Advertisements>(cancellationToken);
                 return new GetAllAdvertisementQueryResponse

@@ -1,5 +1,6 @@
 ﻿using HelpPaw.Persistence.Configuration;
 using HelpPaw.Persistence.Context;
+using HelpPawApi.Application.DTOs.Command.VetInterestedAdvertisement;
 using HelpPawApi.Application.DTOs.Query.GetAdvertisement;
 using HelpPawApi.Application.DTOs.Query.GetAllAdvertisement;
 using HelpPawApi.Application.DTOs.Query.GetAllAdvertisementWithoutLocation;
@@ -29,7 +30,43 @@ namespace HelpPawApi.Controllers
             _userManager = userManager;
             _mediatR = mediatR;
             _context = context;
+
         }
+        [Authorize]
+        [HttpPost("Vet/Interested/{advertisementId}")]
+        public async Task<IActionResult> VetInterestedAdvertisement([FromRoute] string advertisementId)
+        {
+            // 1️⃣ Token’dan veterinerin email bilgisini al
+            var vetEmail = User.FindFirst(ClaimTypes.Email)?.Value;
+
+            if (string.IsNullOrEmpty(vetEmail))
+            {
+                vetEmail = User.FindFirst(ClaimTypes.Name)?.Value;
+            }
+
+            if (string.IsNullOrEmpty(vetEmail))
+            {
+                return Unauthorized("Token geçerli fakat kullanıcı bilgisi bulunamadı.");
+            }
+
+            // 2️⃣ Command Request oluştur
+            var request = new VetInterestedAdvertisementCommandRequest
+            {
+                AdvertisementId = advertisementId,
+                VetEmailFromToken = vetEmail
+            };
+
+            // 3️⃣ MediatR ile handler’a gönder
+            var result = await _mediatR.Send(request);
+
+            if (!result.IsSuccess)
+            {
+                return BadRequest(result);
+            }
+
+            return Ok(result);
+        }
+
 
         [Authorize]
         [HttpGet("User/Get/All")]
@@ -174,5 +211,6 @@ namespace HelpPawApi.Controllers
             return Ok(result);
 
         }
+
     }
 }

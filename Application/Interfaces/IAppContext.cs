@@ -1,4 +1,5 @@
 ﻿using HelpPawApi.Domain.Entities.Advertisement;
+using HelpPawApi.Domain.Entities.Notification;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,9 @@ namespace HelpPawApi.Application.Interfaces
     public interface IAppContext
     {
          public DbSet<Advertisements> Advertisements { get; set; }
+        DbSet<Notification> Notifications { get; set; }
+
+
 
         public Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }

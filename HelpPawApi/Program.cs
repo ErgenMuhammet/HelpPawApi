@@ -11,20 +11,22 @@ using System.Text;
 using HelpPawApi.Application.Interfaces; 
 using HelpPaw.Persistence.Context;
 using HelpPawApi.ChatHub;
+using HelpPaw.Infrastructure.Hubs;
+using HelpPaw.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddCors(opt =>
-{
-    opt.AddPolicy("CorsPolicy", builder =>
-    {
-        builder.AllowAnyOrigin().
-        AllowAnyMethod().
-        SetIsOriginAllowed((host) => true).
-        AllowCredentials();
+//builder.Services.AddCors(opt =>
+//{
+//    opt.AddPolicy("CorsPolicy", builder =>
+//    {
+//        builder.AllowAnyOrigin().
+//        AllowAnyMethod().
+//        SetIsOriginAllowed((host) => true).
+//        AllowCredentials();
 
-    });
-});
+//    });
+//});
 builder.Services.AddSignalR();
 
 builder.Services.AddSwaggerGen(option =>
@@ -64,6 +66,7 @@ builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddInfrastructure(builder.Configuration);
 
 builder.Services.AddScoped<IAppContext, IdentityContext>(); //
+builder.Services.AddScoped<INotificationService, NotificationService>();
 
 // JWT Ayarlarý
 builder.Services.AddAuthentication(opt =>
@@ -121,7 +124,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors("CorsPolicy");
+//app.UseCors("CorsPolicy");
 
 app.UseAuthentication(); 
 app.UseAuthorization();  
@@ -129,5 +132,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.MapHub<SignalRHub>("/signalrhub"); //anlýk bildirimler için handshake ile baðlantý devamlý saðlýyor
+app.MapHub<NotificationHub>("/notificationhub");
 
 app.Run();

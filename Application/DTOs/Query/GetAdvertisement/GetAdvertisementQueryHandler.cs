@@ -19,7 +19,9 @@ namespace HelpPawApi.Application.DTOs.Query.GetAdvertisement
         }
         public async Task<GetAdvertisementQueryResponse> Handle(GetAdvertisementQueryRequest request, CancellationToken cancellationToken)
         {
-            var advs = await _context.Advertisements.FirstOrDefaultAsync(x => x.Id.ToString() == request.AdvertisementId);
+            var advs = await _context.Advertisements
+      .Include(x => x.User)
+      .FirstOrDefaultAsync(x => x.Id.ToString() == request.AdvertisementId);
 
             if (advs == null)
             {
