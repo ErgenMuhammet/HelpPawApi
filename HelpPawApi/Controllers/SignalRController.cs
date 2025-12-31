@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.SignalR;
 namespace HelpPawApi.Controllers
 {
     [ApiController]
-    [Route("api/{controller}")]
+    [Route("api/")]
     public class SignalRController : ControllerBase
     {
         private readonly IMediator _mediatR;

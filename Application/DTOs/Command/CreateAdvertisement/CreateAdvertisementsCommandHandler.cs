@@ -39,6 +39,7 @@
                     IsActive = true,
                     Description = request.Description,
                     AddressDescription = request.AddressDescription,
+                    userName = user.UserName, 
 
                     UserId = user.Id,
                 };
@@ -58,13 +59,14 @@
                         Error = ex.Message,
                         AdvertisementId = advs.Id,
                         UserId = user.Id,
+
                     }; 
                 }
 
                 return new CreateAdvertisementsCommandResponse
                 {
                     IsSucces = true,
-                    Message = "Ilan yayınlandı.",
+                    Message = "Ilan başarıyla   yayınlandı.",
                     Error = null,
                     AdvertisementId = advs.Id,
                     UserId = user.Id,

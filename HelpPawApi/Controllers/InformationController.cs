@@ -1,4 +1,6 @@
 ﻿using HelpPawApi.Application.DTOs.Query.ShowMyInformation;
+using HelpPawApi.Application.DTOs.Query.ShowMyInformationForUser;
+using HelpPawApi.Application.DTOs.Query.ShowMyInformationForVet;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +12,7 @@ namespace HelpPawApi.Controllers
     [Route("api/[controller]")]
     public class InformationController : ControllerBase
     {
-        private readonly IMediator   _mediatR;
+        private readonly IMediator _mediatR;
 
         public InformationController(IMediator mediatR)
         {
@@ -18,8 +20,8 @@ namespace HelpPawApi.Controllers
         }
 
         [Authorize]
-        [HttpGet("MyInformation")]
-        public async Task<IActionResult> ShowMyInformation()
+        [HttpGet("MyInformation/User")]
+        public async Task<IActionResult> ShowMyInformationForUser()
         {
             var UserIdentifier = User.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value;
 
@@ -36,11 +38,9 @@ namespace HelpPawApi.Controllers
                 return Unauthorized("Kullanıcı bilgileri bulunamadı");
             }
 
-            var request = new ShowMyInformationQueryRequest
+            var request = new ShowMyInformationForUserQueryRequest
             {
-
                 EmailFromToken = UserIdentifier
-
             };
             
            var result = await _mediatR.Send(request);
@@ -53,6 +53,43 @@ namespace HelpPawApi.Controllers
             return Ok(result);
            
             
+
+        }
+
+        [Authorize]
+        [HttpGet("MyInformation/Vet")]
+        public async Task<IActionResult> ShowMyInformationForVet()
+        {
+            var UserIdentifier = User.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value;
+
+            if (UserIdentifier == null)
+            {
+                UserIdentifier = User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value;
+            }
+            if (UserIdentifier == null)
+            {
+                UserIdentifier = User.Identity.Name;
+            }
+            if (string.IsNullOrEmpty(UserIdentifier))
+            {
+                return Unauthorized("Kullanıcı bilgileri bulunamadı");
+            }
+
+            var request = new ShowMyInformationForVetQueryRequest
+            {
+                EmailFromToken = UserIdentifier
+            };
+
+            var result = await _mediatR.Send(request);
+
+            if (!result.IsSucces)
+            {
+                return BadRequest(result);
+            }
+
+            return Ok(result);
+
+
 
         }
     }

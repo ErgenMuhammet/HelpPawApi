@@ -1,4 +1,5 @@
-﻿using HelpPawApi.Domain.Entities.AppUser;
+﻿using HelpPawApi.Application.DTOs.Query.ShowMyInformationForUser;
+using HelpPawApi.Domain.Entities.AppUser;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -9,29 +10,29 @@ using System.Threading.Tasks;
 
 namespace HelpPawApi.Application.DTOs.Query.ShowMyInformation
 {
-    public class ShowMyInformationQueryHandler : IRequestHandler<ShowMyInformationQueryRequest, ShowMyInformationQueryResponse>
+    public class ShowMyInformationForVetQueryHandler : IRequestHandler<ShowMyInformationForUserQueryRequest, ShowMyInformationForVetQueryResponse>
     {
         private readonly UserManager<AppUsers> _userManager;
 
-        public ShowMyInformationQueryHandler(UserManager<AppUsers> userManager)
+        public ShowMyInformationForVetQueryHandler(UserManager<AppUsers> userManager)
         {
             _userManager = userManager;
         }
 
-        public  async Task<ShowMyInformationQueryResponse> Handle(ShowMyInformationQueryRequest request, CancellationToken cancellationToken)
+        public  async Task<ShowMyInformationForVetQueryResponse> Handle(ShowMyInformationForUserQueryRequest request, CancellationToken cancellationToken)
         {
             var user = await _userManager.FindByEmailAsync(request.EmailFromToken);
 
             if (user == null)
             {
-                return new ShowMyInformationQueryResponse
+                return new ShowMyInformationForVetQueryResponse
                 {
                     Message = "Kullanıcı bilgileri bulunmadı.",
                     IsSucces = false,
                 };
             }
 
-            return new ShowMyInformationQueryResponse
+            return new ShowMyInformationForVetQueryResponse
             {
                 BirthDate = user.BirthDate,
                 City = user.City,

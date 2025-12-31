@@ -3,9 +3,9 @@ using MediatR;
 using System.Text.Json.Serialization;
 
 
-namespace HelpPawApi.Application.DTOs.Command.UpdateUser
+namespace HelpPawApi.Application.DTOs.Command.UpdateVet
 {
-    public class UpdateUserCommandRequest:IRequest<UpdateUserCommandResponse> 
+    public class UpdateVetCommandRequest:IRequest<UpdateVetCommandResponse> 
     {
         [JsonIgnore]
         public string? EmailFromToken { get; set; }
@@ -16,6 +16,7 @@ namespace HelpPawApi.Application.DTOs.Command.UpdateUser
     
         public DateTime Bhirtday{ get; set; }
 
-    
+        public string? VeterinaryClinicName { get; set; }        
+        public Location ClinicLocation { get; set; }
     }
 }

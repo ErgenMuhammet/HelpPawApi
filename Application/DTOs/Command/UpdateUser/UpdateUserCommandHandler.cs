@@ -37,20 +37,8 @@ namespace HelpPawApi.Application.DTOs.Command.UpdateUser
             user.City = request.City;
             user.PhoneNumber = request.PhoneNumber;           
             user.BirthDate = request.Bhirtday;
-
           
-            if (user is Vet vetUser)
-            {
-                if (!string.IsNullOrEmpty(request.VeterinaryClinicName))
-                    vetUser.VeterinaryClinicName = request.VeterinaryClinicName;
-
-                if (request.ClinicLocation != null)
-                {
-                    vetUser.Location = request.ClinicLocation;
-                }
-
-            }
-                var result = await _userManager.UpdateAsync(user);
+          var result = await _userManager.UpdateAsync(user);
             
             if(result.Succeeded)
             {

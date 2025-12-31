@@ -14,7 +14,7 @@ namespace HelpPawApi.Application.DTOs.Command.CreateAdvertisement
     {
         [JsonIgnore]
         public string? EmailFromToken{ get; set; }
-
+        
         public string Title { get; set; }  
         public string AddressDescription { get; set; }  
         public string Description { get; set; }
