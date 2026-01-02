@@ -14,17 +14,18 @@ using HelpPawApi.ChatHub;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//builder.Services.AddCors(opt =>
-//{
-//    opt.AddPolicy("CorsPolicy", builder =>
-//    {
-//        builder.AllowAnyOrigin().
-//        AllowAnyMethod().
-//        SetIsOriginAllowed((host) => true).
-//        AllowCredentials();
+builder.Services.AddCors(opt =>
+{
+    opt.AddPolicy("CorsPolicy", builder =>
+    {
+        builder.AllowAnyHeader().
+        AllowAnyMethod().
+        AllowAnyHeader().
+        SetIsOriginAllowed((host) => true).
+        AllowCredentials();
 
-//    });
-//});
+    });
+});
 builder.Services.AddSignalR();
 
 builder.Services.AddSwaggerGen(option =>
@@ -58,14 +59,14 @@ builder.Services.AddSwaggerGen(option =>
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
-// Katmanlarýn Servis Kayýtlarý
+
 builder.Services.AddPersistenceServices(builder.Configuration);
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddInfrastructure(builder.Configuration);
 
-builder.Services.AddScoped<IAppContext, IdentityContext>(); //
+builder.Services.AddScoped<IAppContext, IdentityContext>(); 
 
-// JWT Ayarlarý
+
 builder.Services.AddAuthentication(opt =>
 {
     opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

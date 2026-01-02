@@ -1,4 +1,5 @@
-﻿using HelpPaw.Infrustructure.EmailService;
+﻿using HelpPaw.Infrustructure.ChatService;
+using HelpPaw.Infrustructure.EmailService;
 using HelpPawApi.Application.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,6 +16,7 @@ namespace HelpPaw.Infrustructure
         public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped<IEmailServices, EmailServices>();
+            services.AddScoped<IChatService, ChatServices>();
 
         }
     }

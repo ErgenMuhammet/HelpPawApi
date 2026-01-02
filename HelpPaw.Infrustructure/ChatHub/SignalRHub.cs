@@ -1,5 +1,4 @@
-﻿using HelpPawApi.Application.DTOs.Command.ChatMessage;
-using MediatR;
+﻿using MediatR;
 
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
@@ -42,12 +41,7 @@ namespace HelpPawApi.ChatHub
             await base.OnDisconnectedAsync(exception);
         }
         
-        public  async Task SendMessage(string message  , string? ToUser = null)
-        {
-            var UserName = Context.GetHttpContext().Request.Query["kimlik"];
-
-            await _mediatR.Send(new ChatMessageCommandRequest(UserName, ToUser, message));
-        }
+       
 
         
     }

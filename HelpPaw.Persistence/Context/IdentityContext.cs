@@ -22,6 +22,7 @@ namespace HelpPaw.Persistence.Context
 
         public DbSet<Location> location { get; set; }
         public DbSet<Advertisements> Advertisements { get; set; }
+        public DbSet<ChatMessage> Messages { get; set; }
 
         public async Task<int> SaveChangesAsync()
         {
