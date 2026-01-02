@@ -11,7 +11,7 @@ namespace HelpPawApi.Application.DTOs.Command.RefreshMyPassword
     public class RefreshMyPasswordCommandRequest :IRequest<RefreshMyPasswordCommandResponse>
     {
         [JsonIgnore]
-        public string EmailFromToken { get; set; }
+        public string? EmailFromToken { get; set; }
 
         public string CurrentPassword { get; set; }
         public string NewPassword { get; set; } 

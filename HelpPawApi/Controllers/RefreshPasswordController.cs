@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace HelpPawApi.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/")]
     public class RefreshPasswordController:ControllerBase
     {
         private readonly IMediator _mediatR;
@@ -17,7 +17,7 @@ namespace HelpPawApi.Controllers
             _mediatR = mediatR;
         }
 
-        [HttpPost("ResetPassword")]
+        [HttpPut("ResetPassword")]
         public async Task<IActionResult> ResetPassword([FromBody] ForgotMyPasswordCommandRequest request)
         {
             var response = await _mediatR.Send(request);
@@ -29,7 +29,7 @@ namespace HelpPawApi.Controllers
         }
 
             [Authorize]
-            [HttpPost("RefreshPassword")]
+            [HttpPatch("RefreshPassword")]
             public async Task<IActionResult> RefreshPassword([FromBody] RefreshMyPasswordCommandRequest request)
             {
             var userIdentifier = User.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value;

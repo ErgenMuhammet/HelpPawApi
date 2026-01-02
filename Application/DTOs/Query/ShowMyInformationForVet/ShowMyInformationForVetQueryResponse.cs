@@ -6,9 +6,9 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HelpPawApi.Application.DTOs.Query.ShowMyInformation
+namespace HelpPawApi.Application.DTOs.Query.ShowMyInformationForVet
 {
-    public class ShowMyInformationQueryResponse
+    public class ShowMyInformationForVetQueryResponse
     {
         public string FullName { get; set; }
         public string? PhotoUrl { get; set; }
@@ -16,7 +16,9 @@ namespace HelpPawApi.Application.DTOs.Query.ShowMyInformation
         public DateTime? BirthDate { get; set; }
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
-
+        public string VeterinaryClinicName { get; set; }
+        public string VeterinerRegistiryNumber { get; set; }
+        public Location? Location { get; set; }
         public string Message{ get; set; }
         public bool IsSucces { get; set; }
     }

@@ -2,7 +2,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Cryptography.Xml;
 
 namespace HelpPawApi.Application.DTOs.Query.GetUsers
 {
@@ -17,14 +16,24 @@ namespace HelpPawApi.Application.DTOs.Query.GetUsers
 
         public async Task<GetUsersQueryResponse> Handle(GetUsersQueryRequest request, CancellationToken cancellationToken)
         {
-            var Users = await _userManager.Users.ToListAsync<AppUsers>();
+            var Users = await _userManager.Users.Select(x => new UserListDto { Id = x.Id, FullName = x.FullName , Email = x.Email}).ToListAsync(cancellationToken);
 
             if (Users == null)
             {
                 return new GetUsersQueryResponse
                 {
-                    Message = "Görüntülenecek kullanıcı bulunamadı.",
                     IsSucces = false,
+                    Message = "Kullanıcı Listesi Görüntülenemedi",
+                    Users = null
+                };
+            }
+
+            if (!Users.Any())
+            {
+                return new GetUsersQueryResponse
+                {
+                    IsSucces = false,
+                    Message = "Görüntülenecek Kullanıcı bulunamadı",
                     Users = null
                 };
             }
@@ -33,11 +42,9 @@ namespace HelpPawApi.Application.DTOs.Query.GetUsers
             {
                 IsSucces = true,
                 Users = Users,
-                Message = "Kullanıcılar başarı ile listelendi"
+                Message = "Kullanıcı Listesi Getirildi"
             };
 
-        
         }
-
     }
 }

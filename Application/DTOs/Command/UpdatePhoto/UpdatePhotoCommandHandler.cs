@@ -1,4 +1,5 @@
 ﻿using HelpPawApi.Application.DTOs.Command.UpdateUser;
+using HelpPawApi.Application.DTOs.Command.UpdateVet;
 using HelpPawApi.Domain.Entities.AppUser;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -34,11 +35,23 @@ namespace HelpPawApi.Application.DTOs.Command.UpdatePhoto
 
             user.PhotoUrl = request.NewPhoto;
 
+            var result = await _userManager.UpdateAsync(user);
+
+            if (result.Succeeded)
+            {
+                return new UpdatePhotoCommandResponse
+                {
+                    IsSucces = true,
+                    Message = "Profil fotoğrafı başarıyla değştririldi",
+                    UserId = user.Id
+                };
+            }
+
             return new UpdatePhotoCommandResponse
             {
-                IsSucces = true,
-                Message = "Profil fotoğrafı başarıyla değştririldi",
-                UserId = user.Id
+                IsSucces = false,
+                Message = "Profil fotoğrafı değiştirilirken bir hata oldu",
+                UserId = user.Id               
             };
 
         }

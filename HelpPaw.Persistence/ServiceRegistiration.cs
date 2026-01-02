@@ -38,7 +38,7 @@ namespace HelpPaw.Persistence
 
                 services.AddScoped<ITokenServices, TokenServices>();
                 services.AddScoped<IAppContext>(x => x.GetRequiredService<IdentityContext>());
-            services.AddScoped<IChatService, ChatServices>();
+               
         }
     }
 }
