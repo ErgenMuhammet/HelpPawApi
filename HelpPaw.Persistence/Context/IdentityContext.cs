@@ -5,6 +5,7 @@ using HelpPawApi.Domain.Entities.AppRole;
 using HelpPawApi.Domain.Entities.AppUser;
 using HelpPawApi.Domain.Entities.Chat;
 using HelpPawApi.Domain.Entities.Locations;
+using MediatR;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
@@ -23,6 +24,7 @@ namespace HelpPaw.Persistence.Context
         public DbSet<Location> location { get; set; }
         public DbSet<Advertisements> Advertisements { get; set; }
         public DbSet<ChatMessage> Messages { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
 
         public async Task<int> SaveChangesAsync()
         {

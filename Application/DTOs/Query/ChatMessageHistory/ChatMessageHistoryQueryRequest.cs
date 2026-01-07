@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace HelpPawApi.Application.DTOs.Query.ChatMessageHistory
 {
-    public class ChatMessageHistoryQueryRequest: IRequest<ChatMessageHistoryQueryResponse>
+    public class ChatMessageHistoryQueryRequest : IRequest<ChatMessageHistoryQueryResponse>
     {
-        public string CurrentUserId { get; set; }
-        public string TargetUserId { get; set; }
+        public string? CurrentUserId { get; set; }
+        public string? TargetUserId { get; set; }
 
 
     }

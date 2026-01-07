@@ -61,19 +61,20 @@ using System.Threading.Tasks;
                     .OrderByDescending(a => a.CreatedTime).ToListAsync<Advertisements>(cancellationToken);          
             }
 
-            if (Advs.Count >= 0)
+            if (Advs.Count > 0)
             {
                 return new GetUserAdvertisementsQueryResponse
                 {
                     PastAdvertisements = Advs,
-                    IsSucces = true
+                    IsSucces = true,
+                    Message = "ilanlar getirildi"
                 };
             }
             return new GetUserAdvertisementsQueryResponse
             {
                 IsSucces = false,
                 PastAdvertisements = null,
-                Message = "görüntülenecek ilan bulunmamatadır"
+                Message = "Görüntülenecek ilan bulunmamatadır"
             };
 
 

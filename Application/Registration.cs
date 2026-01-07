@@ -10,7 +10,7 @@ namespace HelpPawApi.Application
         public static void AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
-
+            
         }
     }
 }

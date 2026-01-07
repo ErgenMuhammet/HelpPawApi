@@ -12,7 +12,7 @@ namespace HelpPawApi.Application.DTOs.Query.GetUser
     {
         
 
-        public UserDto User { get; set; }
+        public List<UserDto>? User { get; set; }
         public bool IsSucces { get; set; }
         public string? Message { get; set; }
 

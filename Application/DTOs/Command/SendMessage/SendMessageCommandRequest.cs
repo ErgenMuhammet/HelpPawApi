@@ -12,8 +12,8 @@ namespace HelpPawApi.Application.DTOs.Command.SendMessage
     {
         [JsonIgnore]
         public string? SenderId { get; set; }
-        public string ReceiverId { get; set; }
-        public string Message { get; set; }
+        public string? ReceiverId { get; set; }
+        public string? Message { get; set; }
 
     }
 }
