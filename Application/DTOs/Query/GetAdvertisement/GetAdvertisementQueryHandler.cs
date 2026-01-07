@@ -36,7 +36,8 @@ namespace HelpPawApi.Application.DTOs.Query.GetAdvertisement
 
             return new GetAdvertisementQueryResponse
             {
-                Message =  "İlan bilgileri başarı ile getirildi.",
+                AdvsId = advs.Id.ToString(),
+                Message = "İlan bilgileri başarı ile getirildi.",
                 AddressDescription = advs.AddressDescription,
                 Description = advs.Description,
                 ImageUrl = advs.ImageUrl,
