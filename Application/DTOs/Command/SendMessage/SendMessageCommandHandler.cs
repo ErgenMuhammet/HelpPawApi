@@ -1,5 +1,6 @@
 ﻿using HelpPawApi.Application.Interfaces;
 using HelpPawApi.Domain.Entities.Chat;
+using HelpPawApi.Domain.Entities.Notification;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
@@ -15,12 +16,14 @@ namespace HelpPawApi.Application.DTOs.Command.SendMessage
     {
         private readonly IAppContext _appContext;
         private readonly IChatService _chatService;
-        private readonly ILogger<SendMessageCommandHandler> _logger; 
-        public SendMessageCommandHandler(IAppContext appContext, IChatService chatService, ILogger<SendMessageCommandHandler> logger)
+        private readonly ILogger<SendMessageCommandHandler> _logger;
+        private readonly INotificationService _notificationService;
+        public SendMessageCommandHandler(IAppContext appContext, IChatService chatService, ILogger<SendMessageCommandHandler> logger, INotificationService notificationService)
         {
             _appContext = appContext;
             _chatService = chatService;
             _logger = logger;
+            _notificationService = notificationService;
         }
 
         public async Task<SendMessageCommandResponse> Handle(SendMessageCommandRequest request, CancellationToken cancellationToken)
@@ -39,7 +42,9 @@ namespace HelpPawApi.Application.DTOs.Command.SendMessage
             await _appContext.Messages.AddAsync(newMessage);
 
             var result = await _appContext.SaveChangesAsync(cancellationToken);
+
             
+
             if (result <= 0)
             {
                 return new SendMessageCommandResponse
@@ -49,7 +54,20 @@ namespace HelpPawApi.Application.DTOs.Command.SendMessage
                 };
 
             }
+            var notification = new Notification
+            {
+                UserId = request.ReceiverId,
+                Title = "Yeni Mesajınız Var",
+                Message = "Yeni bir mesaj aldınız. Sohbet ekranına giderek okuyabilirsiniz.",
+                Type = NotificationType.NewMessage,
+                IsRead = false
+            };
 
+            await _appContext.Notifications.AddAsync(notification, cancellationToken);
+            await _appContext.SaveChangesAsync(cancellationToken);
+
+           
+            await _notificationService.SendAsync(notification);
             bool socketSuccess = false;
 
             try
@@ -78,6 +96,8 @@ namespace HelpPawApi.Application.DTOs.Command.SendMessage
                 IsSucces = true, 
                 Message = returnMessage
             };
+
+           
         }
     }
 }

@@ -25,19 +25,21 @@ namespace HelpPawApi.Application.DTOs.Query.ChatMessageHistory
         }
         public async Task<ChatMessageHistoryQueryResponse> Handle(ChatMessageHistoryQueryRequest request, CancellationToken cancellationToken)
         {
-            var messages = await _appContext.Messages.Where
-                (
-                    x => x.SenderId == request.CurrentUserId && x.ReceiverId == request.TargetUserId
-                ).OrderBy(z => z.CreatedTime).Select(i => new ChatMessageDto
-                {
-                    Id = i.Id.ToString(),
-                    SenderId = i.SenderId,
-                    ReceiverId = i.ReceiverId,
-                    MessageContent = i.Message,
-                    CreatedDate = i.CreatedTime,
-                    IsRead = i.IsRead,
-                    IsMine = i.SenderId == request.CurrentUserId
-                }).ToListAsync(cancellationToken);
+                 var messages = await _appContext.Messages.Where(x =>
+                    (x.SenderId == request.CurrentUserId && x.ReceiverId == request.TargetUserId.Trim()) ||
+                    (x.SenderId == request.TargetUserId && x.ReceiverId == request.CurrentUserId.Trim())).
+                    OrderBy(z => z.CreatedTime)
+                    .Select(i => new ChatMessageDto
+                    {
+                        Id = i.Id.ToString(),
+                        SenderId = i.SenderId,
+                        ReceiverId = i.ReceiverId,
+                        MessageContent = i.Message,
+                        CreatedDate = i.CreatedTime,
+                        IsRead = i.IsRead,
+                        IsMine = i.SenderId == request.CurrentUserId
+                    })
+                    .ToListAsync(cancellationToken);
 
             if (!messages.Any())
             {

@@ -1,5 +1,6 @@
 ﻿using HelpPawApi.Domain.Entities.Advertisement;
 using HelpPawApi.Domain.Entities.Chat;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace HelpPawApi.Application.Interfaces
     {
          public DbSet<ChatMessage> Messages { get; set; }
          public DbSet<Advertisements> Advertisements { get; set; }
- 
+        DbSet<Notification> Notifications { get; set; }
         public Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
 }

@@ -1,6 +1,11 @@
+using HelpPaw.Infrastructure;
+using HelpPaw.Infrastructure.Hubs;
 using HelpPaw.Infrustructure;
 using HelpPaw.Persistence;
+using HelpPaw.Persistence.Context;
 using HelpPawApi.Application;
+using HelpPawApi.Application.Interfaces; 
+using HelpPawApi.ChatHub;
 using HelpPawApi.Domain.Entities.AppRole;
 using HelpPawApi.Domain.Entities.AppUser;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -8,9 +13,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
-using HelpPawApi.Application.Interfaces; 
-using HelpPaw.Persistence.Context;
-using HelpPawApi.ChatHub;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -64,8 +66,8 @@ builder.Services.AddPersistenceServices(builder.Configuration);
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddInfrastructure(builder.Configuration);
 
-builder.Services.AddScoped<IAppContext, IdentityContext>(); 
-
+builder.Services.AddScoped<IAppContext, IdentityContext>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
 
 builder.Services.AddAuthentication(opt =>
 {
@@ -130,5 +132,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.MapHub<SignalRHub>("/signalrhub"); //anlýk bildirimler için handshake ile baðlantý devamlý saðlýyor
+app.MapHub<NotificationHub>("/notificationhub");
 
 app.Run();

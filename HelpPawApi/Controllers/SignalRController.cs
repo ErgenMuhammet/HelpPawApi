@@ -18,21 +18,21 @@ namespace HelpPawApi.Controllers
         }
 
 
-        [HttpGet("UsersForChat")]
-        public async Task<IActionResult> GetUsers()
-        {
+        //[HttpGet("UsersForChat")]
+        //public async Task<IActionResult> GetUsers()
+        //{
 
-            var request = new GetUserAdvertisementsQueryRequest();
+        //    var request = new GetUserAdvertisementsQueryRequest();
 
-            var result = await _mediatR.Send(request);
+        //    var result = await _mediatR.Send(request);
 
-            if (result.IsSucces == false)
-            {
-                return BadRequest(result);
-            }
+        //    if (result.IsSucces == false)
+        //    {
+        //        return BadRequest(result);
+        //    }
 
-            return Ok(result);
-        }
+        //    return Ok(result);
+        //}
 
         [HttpGet("Get/PastMessages/{TargetId}")]
         public async Task<IActionResult> GetMessages([FromRoute] string TargetId)

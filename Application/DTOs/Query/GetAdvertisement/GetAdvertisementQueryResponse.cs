@@ -11,6 +11,7 @@ namespace HelpPawApi.Application.DTOs.Query.GetAdvertisement
 {
     public class GetAdvertisementQueryResponse
     {
+        public string? AdvsId { get; set; }
         public string Title { get; set; }
         public string AddressDescription { get; set; }
         public string Description { get; set; }
